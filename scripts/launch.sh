@@ -9,8 +9,10 @@ if [[ $(uname -o) == *'Android'* ]]; then
     XPHISHER_ROOT="/data/data/com.termux/files/usr/opt/xphisher"
 elif [[ -f "$REPO_ROOT/xphisher.sh" ]]; then
     XPHISHER_ROOT="$REPO_ROOT"
-else
+elif [[ -f "/opt/xphisher/xphisher.sh" ]]; then
     XPHISHER_ROOT="/opt/xphisher"
+else
+    XPHISHER_ROOT="$REPO_ROOT"
 fi
 
 case "${1:-}" in
