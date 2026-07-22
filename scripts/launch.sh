@@ -2,8 +2,13 @@
 
 # https://github.com/akrakib/xphisher
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 if [[ $(uname -o) == *'Android'* ]];then
 	XPHISHER_ROOT="/data/data/com.termux/files/usr/opt/xphisher"
+elif [[ -f "$REPO_ROOT/xphisher.sh" ]]; then
+	export XPHISHER_ROOT="$REPO_ROOT"
 else
 	export XPHISHER_ROOT="/opt/xphisher"
 fi
